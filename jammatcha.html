@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flip Clock - matcha</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Fredoka', sans-serif; }
+        body { background: transparent; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+        
+        .clock-widget {
+            width: 320px; padding: 60px 20px 30px 20px; border-radius: 36px;
+            position: relative; display: flex; justify-content: center; align-items: center; gap: 12px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.06); user-select: none;
+            
+            border: 4px solid #A3E635;
+            background-color: rgba(247, 254, 231, 0.5);
+            background-image: radial-gradient(rgba(163, 230, 53, 0.2) 2px, transparent 2px);
+            background-size: 16px 16px;
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+        }
+
+        .top-accent-svg { position: absolute; top: -1px; left: -1px; width: calc(100% + 2px); height: auto; z-index: 5; pointer-events: none; border-radius: 36px 36px 0 0; overflow: hidden; }
+        .decor-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 6; }
+        
+        .flip-card {
+            width: 110px; height: 110px; border-radius: 24px;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 4.5rem; font-weight: 700; position: relative; overflow: hidden;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08); z-index: 10;
+            background: #84CC16; color: #FFF; border: 3px solid #65A30D;
+        }
+        
+        .flip-card::after {
+            content: ''; position: absolute; top: 50%; left: 0; width: 100%; height: 4px;
+            background: rgba(0, 0, 0, 0.08); transform: translateY(-50%); z-index: 15;
+        }
+
+        .colon { font-size: 3.5rem; font-weight: 700; margin-bottom: 8px; z-index: 10; color: #65A30D; animation: blink 2s infinite ease-in-out; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+        
+        .watermark { position: absolute; bottom: 10px; right: 20px; font-size: 0.65rem; font-weight: 600; opacity: 0.5; z-index: 10; color: #166534; }
+    </style>
+</head>
+<body>
+    <div class="clock-widget">
+        
+                    <svg class="top-accent-svg" viewBox="0 0 330 48" xmlns="http://www.w3.org/2000/svg">
+                        <path fill="#A3E635" d="M0,0 L330,0 L330,15 C 315,15 315,35 290,35 C 265,35 265,15 240,15 C 215,15 215,45 180,45 C 145,45 145,20 120,20 C 95,20 95,40 70,40 C 45,40 45,20 0,20 Z"/>
+                    </svg>
+        <div class="decor-layer">
+                    <svg width="40" height="40" viewBox="0 0 100 100" style="position: absolute; top: 10px; left: 15px;">
+                        <path d="M10,90 C10,90 10,20 50,10 C90,10 90,50 90,50 C90,90 10,90 10,90 Z" fill="#4D7C0F" opacity="0.6"/>
+                        <path d="M15,85 C15,85 15,30 50,20 C80,20 80,50 80,50 C80,85 15,85 15,85 Z" fill="#A3E635"/>
+                    </svg>
+                </div>
+
+        <div class="flip-card" id="hours">00</div>
+        <div class="colon">:</div>
+        <div class="flip-card" id="minutes">00</div>
+        
+        <div class="watermark">Itsalyaesthetic</div>
+    </div>
+    
+    <script>
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('hours').innerText = hours;
+            document.getElementById('minutes').innerText = minutes;
+        }
+        updateClock();
+        setInterval(updateClock, 1000);
+    </script>
+</body>
+</html>
