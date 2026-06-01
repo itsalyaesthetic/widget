@@ -3,159 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cute Calendar Widget - Itsalyaesthetic</title>
+    <title>Aesthetic Calendar - nature</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Fredoka', sans-serif;
-        }
-
-        /* Latar Belakang Luar Total Transparan */
-        body {
-            background: transparent;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        .calendar-container {
-            width: 320px; 
-            padding: 70px 24px 35px 24px; 
-            background-color: rgba(255, 253, 248, 0.75); 
-            border: 4px solid #60A5FA;
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Fredoka', sans-serif; }
+        body { background: transparent; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+        
+        .calendar-widget {
+            width: 330px; 
+            padding: 75px 24px 35px 24px; 
             border-radius: 36px;
             position: relative;
-            color: #1E3A8A;
             user-select: none;
-            overflow: hidden; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.06);
             
-            background-image: radial-gradient(rgba(96, 165, 250, 0.08) 1.5px, transparent 1.5px);
-            background-size: 15px 15px;
+            border: 4px solid #93C5FD;
+            color: #0284C7;
+            background-color: rgba(240, 249, 255, 0.5);
+            background-image: repeating-radial-gradient(circle at 0 0, transparent 0, rgba(255,255,255,0.6) 15px, transparent 16px);
+            background-size: auto;
+            background-position: 0 0;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
         }
 
-        .decor-layer {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 2;
+        .top-accent-svg {
+            position: absolute; top: -1px; left: -1px; width: calc(100% + 2px); height: auto;
+            z-index: 5; pointer-events: none; border-radius: 36px 36px 0 0; overflow: hidden;
         }
 
-        .calendar-header {
-            text-align: center;
-            margin-bottom: 22px;
-            position: relative;
-            z-index: 3;
-        }
-
-        .calendar-header h2 {
-            font-size: 1.45rem;
-            font-weight: 600;
-        }
-
+        .decor-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 6; }
+        
+        .calendar-header { text-align: center; margin-bottom: 22px; position: relative; z-index: 10; }
+        .calendar-header h2 { font-size: 1.5rem; font-weight: 700; }
+        
         .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 5px; 
-            width: 100%; 
-            justify-items: center; 
-            align-items: center;
-            position: relative;
-            z-index: 3;
+            display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; width: 100%; 
+            justify-items: center; align-items: center; position: relative; z-index: 10;
         }
-
-        .day-name {
-            font-weight: 600;
-            font-size: 0.8rem;
-            padding-bottom: 10px;
-            text-transform: uppercase;
-            opacity: 0.8;
-        }
-
+        
+        .day-name { font-weight: 600; font-size: 0.8rem; padding-bottom: 10px; text-transform: uppercase; }
+        
         .day-number {
-            font-size: 0.95rem;
-            font-weight: 500;
-            height: 34px;
-            width: 34px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 11px;
-            cursor: pointer;
-            transition: all 0.2s ease;
+            font-size: 0.95rem; font-weight: 600; height: 34px; width: 34px;
+            display: flex; align-items: center; justify-content: center;
+            border-radius: 12px; cursor: pointer; transition: all 0.2s ease;
+            background: rgba(255,255,255,0.4); position: relative; z-index: 10;
         }
-
-        .empty-day { pointer-events: none; }
-
+        
+        .empty-day { pointer-events: none; background: transparent !important; }
+        
         .today {
-            background-color: #60A5FA; color: #FFF; box-shadow: 0 4px 10px rgba(96, 165, 250, 0.35);
-            font-weight: 600;
+            background-color: #60A5FA !important; color: #FFF; 
+            box-shadow: 0 4px 12px rgba(96, 165, 250, 0.4);
         }
-
+        
         .day-number:not(.today):not(.empty-day):hover {
-            background-color: #DBEAFE; color: #1D4ED8;
-            font-weight: 600;
+            background-color: #E0F2FE; color: #1D4ED8; transform: scale(1.1);
         }
-
-        .watermark {
-            position: absolute;
-            bottom: 12px;
-            right: 22px;
-            font-size: 0.65rem;
-            font-weight: 500;
-            letter-spacing: 0.5px;
-            opacity: 0.4;
-        }
+        
+        .watermark { position: absolute; bottom: 12px; right: 22px; font-size: 0.65rem; font-weight: 600; opacity: 0.4; z-index: 10; }
     </style>
 </head>
 <body>
-
-    <div class="calendar-container">
-        <div class="decor-layer">
-            <!-- Awan Fluffy Kiri Atas -->
-                <svg width="65" height="40" viewBox="0 0 65 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="position: absolute; top: 15px; left: 15px; opacity: 0.9;">
-                    <path d="M20 30 C15 30, 10 25, 12 18 C15 10, 25 10, 28 15 C32 8, 45 8, 48 16 C55 12, 62 18, 60 25 C58 32, 48 30, 45 30 Z" fill="#E0F2FE"/>
-                    <path d="M15 35 C10 35, 5 30, 7 23 C10 15, 20 15, 23 20 C27 13, 40 13, 43 21 C50 17, 57 23, 55 30 C53 37, 43 35, 40 35 Z" fill="#F0F9FF"/>
-                </svg>
-                <!-- Awan Kanan Bawah -->
-                <svg width="45" height="30" viewBox="0 0 65 40" fill="none" xmlns="http://www.w3.org/2000/svg" style="position: absolute; bottom: 10px; right: 10px; opacity: 0.7;">
-                    <path d="M20 30 C15 30, 10 25, 12 18 C15 10, 25 10, 28 15 C32 8, 45 8, 48 16 C55 12, 62 18, 60 25 C58 32, 48 30, 45 30 Z" fill="#F0F9FF"/>
-                </svg>
-        </div>
-
-        <div class="calendar-header">
-            <h2 id="month-year">Bulan Tahun</h2>
-        </div>
+    <div class="calendar-widget">
         
-        <div class="calendar-grid" id="calendar-days">
-            <!-- Diisi otomatis oleh JS -->
-        </div>
+                    <svg class="top-accent-svg" viewBox="0 0 330 75" xmlns="http://www.w3.org/2000/svg">
+                        <path fill="#93C5FD" d="M0,0 L330,0 L330,15 Q305,50 280,15 Q240,65 190,20 Q150,75 110,20 Q70,65 30,15 Q15,40 0,15 Z"/>
+                        <path fill="#E0F2FE" d="M0,0 L330,0 L330,8 Q305,40 280,8 Q240,55 190,13 Q150,65 110,13 Q70,55 30,8 Q15,30 0,8 Z"/>
+                    </svg>
+        <div class="decor-layer"></div>
 
+        <div class="calendar-header"><h2 id="month-year">Bulan Tahun</h2></div>
+        <div class="calendar-grid" id="calendar-days"></div>
         <div class="watermark">Itsalyaesthetic</div>
     </div>
-
+    
     <script>
         function generateCalendar() {
             const calendarDays = document.getElementById("calendar-days");
             const monthYearText = document.getElementById("month-year");
-
             const localDate = new Date();
             const currentYear = localDate.getFullYear();
             const currentMonth = localDate.getMonth();
             const todayDate = localDate.getDate();
-
-            const months = [
-                "Januari", "Februari", "Maret", "April", "Mei", "Juni",
-                "Juli", "Agustus", "September", "Oktober", "November", "Desember"
-            ];
-
+            const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
             const daysName = ["Min", "Sen", "Sel", "Rab", "Kam", "Jum", "Sab"];
 
             monthYearText.innerText = `${months[currentMonth]} ${currentYear}`;
@@ -181,15 +115,10 @@
                 const dayEl = document.createElement("div");
                 dayEl.classList.add("day-number");
                 dayEl.innerText = day;
-
-                if (day === todayDate) {
-                    dayEl.classList.add("today");
-                }
-
+                if (day === todayDate) dayEl.classList.add("today");
                 calendarDays.appendChild(dayEl);
             }
         }
-
         generateCalendar();
     </script>
 </body>
