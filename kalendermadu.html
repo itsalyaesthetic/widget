@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Totally Transparent Honeycomb Calendar</title>
-    <!-- Import Font Fredoka -->
+    <title>Honeycomb Cute Aesthetic Calendar</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -17,49 +16,55 @@
             font-family: 'Fredoka', sans-serif;
         }
 
+        /* Latar belakang luar kalender total transparan */
         body {
             background: transparent;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            overflow: hidden;
         }
 
-        /* Container Utama - Total Transparan */
+        /* Container Utama Kalender */
         .calendar-container {
             width: 350px; 
-            padding: 70px 30px 35px 30px; 
-            background-color: transparent; /* Total bening */
+            padding: 70px 30px 35px 30px; /* Padding presisi seimbang kiri dan kanan */
+            background-color: rgba(255, 253, 248, 0.75); 
             
-            /* Pola Sarang Madu (Honeycomb) Garis Tipis Transparan */
+            /* Pola Sarang Madu (Honeycomb) Transparan */
             background-image: 
-                linear-gradient(30deg, rgba(255, 193, 7, 0.08) 12%, transparent 12.5%, transparent 87%, rgba(255, 193, 7, 0.08) 87.5%, rgba(255, 193, 7, 0.08)),
-                linear-gradient(150deg, rgba(255, 193, 7, 0.08) 12%, transparent 12.5%, transparent 87%, rgba(255, 193, 7, 0.08) 87.5%, rgba(255, 193, 7, 0.08)),
-                linear-gradient(30deg, rgba(255, 193, 7, 0.08) 12%, transparent 12.5%, transparent 87%, rgba(255, 193, 7, 0.08) 87.5%, rgba(255, 193, 7, 0.08)),
-                linear-gradient(150deg, rgba(255, 193, 7, 0.08) 12%, transparent 12.5%, transparent 87%, rgba(255, 193, 7, 0.08) 87.5%, rgba(255, 193, 7, 0.08)),
-                linear-gradient(60deg, rgba(255, 193, 7, 0.1) 25%, transparent 25.5%, transparent 75%, rgba(255, 193, 7, 0.1) 75.5%, rgba(255, 193, 7, 0.1)),
-                linear-gradient(60deg, rgba(255, 193, 7, 0.1) 25%, transparent 25.5%, transparent 75%, rgba(255, 193, 7, 0.1) 75.5%, rgba(255, 193, 7, 0.1));
+                linear-gradient(30deg, rgba(255, 193, 7, 0.04) 12%, transparent 12.5%, transparent 87%, rgba(255, 193, 7, 0.04) 87.5%, rgba(255, 193, 7, 0.04)),
+                linear-gradient(150deg, rgba(255, 193, 7, 0.04) 12%, transparent 12.5%, transparent 87%, rgba(255, 193, 7, 0.04) 87.5%, rgba(255, 193, 7, 0.04)),
+                linear-gradient(30deg, rgba(255, 193, 7, 0.04) 12%, transparent 12.5%, transparent 87%, rgba(255, 193, 7, 0.04) 87.5%, rgba(255, 193, 7, 0.04)),
+                linear-gradient(150deg, rgba(255, 193, 7, 0.04) 12%, transparent 12.5%, transparent 87%, rgba(255, 193, 7, 0.04) 87.5%, rgba(255, 193, 7, 0.04)),
+                linear-gradient(60deg, rgba(255, 193, 7, 0.06) 25%, transparent 25.5%, transparent 75%, rgba(255, 193, 7, 0.06) 75.5%, rgba(255, 193, 7, 0.06)),
+                linear-gradient(60deg, rgba(255, 193, 7, 0.06) 25%, transparent 25.5%, transparent 75%, rgba(255, 193, 7, 0.06) 75.5%, rgba(255, 193, 7, 0.06));
             background-size: 20px 35px;
             background-position: 0 0, 0 0, 10px 17.5px, 10px 17.5px, 0 0, 10px 17.5px;
 
-            border: 4px solid #FFC107; /* Garis tepi kuning madu hangat */
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 4px solid #FFC107; /* Warna utama kuning madu hangat */
             border-radius: 36px;
+            box-shadow: 0 10px 30px rgba(255, 193, 7, 0.12);
             position: relative;
             color: #6D4C13; 
             user-select: none;
             overflow: hidden; 
         }
 
-        /* Hiasan Ornamen Honeycomb Mini di Atas */
+        /* Hiasan Ornamen Honeycomb Mini di Kiri Atas */
         .honeycomb-decor {
             position: absolute;
-            top: 20px;
+            top: 15px;
             left: 25px;
             display: flex;
             gap: 4px;
-            opacity: 0.9;
+            opacity: 0.85;
         }
 
+        /* Bentuk Hexagon Menggunakan CSS */
         .hexagon {
             width: 16px;
             height: 9.24px;
@@ -84,6 +89,7 @@
             border-top: 4.62px solid #FFC107;
         }
 
+        /* Variasi Warna Dekorasi Hexagon */
         .hex-2 { transform: translateY(6px); background-color: #FFB300; }
         .hex-2::before { border-bottom-color: #FFB300; }
         .hex-2::after { border-top-color: #FFB300; }
@@ -105,7 +111,7 @@
             color: #B57912; 
         }
 
-        /* Grid Hari & Tanggal - Rapi dan Presisi */
+        /* Grid Hari & Tanggal (Simetris Kiri-Kanan) */
         .calendar-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
@@ -126,7 +132,7 @@
             text-transform: uppercase;
         }
 
-        /* Angka Tanggal */
+        /* Angka Tanggal Bawaan */
         .day-number {
             font-size: 1rem;
             font-weight: 500;
@@ -135,25 +141,25 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 12px;
+            border-radius: 12px; /* Gaya Kotak Membulat */
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
         .empty-day { pointer-events: none; }
 
-        /* HARI INI (Today) - Flat Cute Rounded Square */
+        /* HARI INI (Today) - Flat Aesthetic Rounded Square */
         .today {
             background-color: #FFC107; 
             color: #FFF;
             font-weight: 600;
-            border-radius: 12px;
+            border-radius: 12px; 
             box-shadow: 0 4px 10px rgba(255, 193, 7, 0.35); 
         }
 
-        /* Hover Effect */
+        /* Hover Effect untuk tanggal lain */
         .day-number:not(.today):not(.empty-day):hover {
-            background-color: rgba(255, 243, 205, 0.6); /* Transparan saat di-hover */
+            background-color: #FFF3CD;
             color: #B57912;
             font-weight: 600;
             border-radius: 12px;
@@ -174,7 +180,6 @@
 <body>
 
     <div class="calendar-container">
-        <!-- Dekorasi Sarang Madu Mini -->
         <div class="honeycomb-decor">
             <div class="hexagon hex-1"></div>
             <div class="hexagon hex-2"></div>
@@ -186,10 +191,8 @@
         </div>
         
         <div class="calendar-grid" id="calendar-days">
-            <!-- Diisi otomatis oleh JavaScript -->
-        </div>
+            </div>
 
-        <!-- Watermark -->
         <div class="watermark">Itsalyaesthetic</div>
     </div>
 
@@ -198,6 +201,7 @@
             const calendarDays = document.getElementById("calendar-days");
             const monthYearText = document.getElementById("month-year");
 
+            // Mengambil tanggal real-time dari perangkat user
             const localDate = new Date();
             const currentYear = localDate.getFullYear();
             const currentMonth = localDate.getMonth();
@@ -213,6 +217,7 @@
             monthYearText.innerText = `${months[currentMonth]} ${currentYear}`;
             calendarDays.innerHTML = "";
 
+            // Render baris nama hari
             daysName.forEach(day => {
                 const dayNameEl = document.createElement("div");
                 dayNameEl.classList.add("day-name");
@@ -223,17 +228,20 @@
             const firstDayIndex = new Date(currentYear, currentMonth, 1).getDay();
             const totalDays = new Date(currentYear, currentMonth + 1, 0).getDate();
 
+            // Membuat slot kosong untuk awal bulan
             for (let i = 0; i < firstDayIndex; i++) {
                 const emptySlot = document.createElement("div");
                 emptySlot.classList.add("day-number", "empty-day");
                 calendarDays.appendChild(emptySlot);
             }
 
+            // Render seluruh angka tanggal
             for (let day = 1; day <= totalDays; day++) {
                 const dayEl = document.createElement("div");
                 dayEl.classList.add("day-number");
                 dayEl.innerText = day;
 
+                // Memberikan penanda khusus jika hari ini sesuai perangkat user
                 if (day === todayDate) {
                     dayEl.classList.add("today");
                 }
@@ -242,6 +250,7 @@
             }
         }
 
+        // Inisialisasi Kalender
         generateCalendar();
     </script>
 </body>
