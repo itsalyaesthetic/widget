@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aesthetic Calendar - sakura</title>
+    <title>Mini Calendar - sakura</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -12,44 +12,44 @@
         body { background: transparent; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
         
         .calendar-widget {
-            width: 330px; 
-            padding: 75px 24px 35px 24px; 
-            border-radius: 36px;
+            width: 280px; 
+            padding: 65px 18px 25px 18px; 
+            border-radius: 30px;
             position: relative;
             user-select: none;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.06);
             
             border: 4px solid #F9A8D4;
             color: #9D174D;
             background-color: rgba(253, 242, 248, 0.5);
             background-image: radial-gradient(rgba(244, 114, 182, 0.12) 2px, transparent 2px);
-            background-size: 20px 20px;
-            background-position: 0 0, 10px 10px;
+            background-size: 16px 16px;
+            background-position: 0 0, 8px 8px;
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
         }
 
         .top-accent-svg {
             position: absolute; top: -1px; left: -1px; width: calc(100% + 2px); height: auto;
-            z-index: 5; pointer-events: none; border-radius: 36px 36px 0 0; overflow: hidden;
+            z-index: 5; pointer-events: none; border-radius: 30px 30px 0 0; overflow: hidden;
         }
 
         .decor-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 6; }
         
-        .calendar-header { text-align: center; margin-bottom: 22px; position: relative; z-index: 10; }
-        .calendar-header h2 { font-size: 1.5rem; font-weight: 700; }
+        .calendar-header { text-align: center; margin-bottom: 16px; position: relative; z-index: 10; }
+        .calendar-header h2 { font-size: 1.25rem; font-weight: 700; }
         
         .calendar-grid {
-            display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; width: 100%; 
+            display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; width: 100%; 
             justify-items: center; align-items: center; position: relative; z-index: 10;
         }
         
-        .day-name { font-weight: 600; font-size: 0.8rem; padding-bottom: 10px; text-transform: uppercase; }
+        .day-name { font-weight: 600; font-size: 0.75rem; padding-bottom: 8px; text-transform: uppercase; }
         
         .day-number {
-            font-size: 0.95rem; font-weight: 600; height: 34px; width: 34px;
+            font-size: 0.85rem; font-weight: 600; height: 30px; width: 30px;
             display: flex; align-items: center; justify-content: center;
-            border-radius: 12px; cursor: pointer; transition: all 0.2s ease;
+            border-radius: 10px; cursor: pointer; transition: all 0.2s ease;
             background: rgba(255,255,255,0.4); position: relative; z-index: 10;
         }
         
@@ -57,14 +57,14 @@
         
         .today {
             background-color: #F472B6 !important; color: #FFF; 
-            box-shadow: 0 4px 12px rgba(244, 114, 182, 0.4);
+            box-shadow: 0 4px 10px rgba(244, 114, 182, 0.4);
         }
         
         .day-number:not(.today):not(.empty-day):hover {
             background-color: #FCE7F3; color: #BE185D; transform: scale(1.1);
         }
         
-        .watermark { position: absolute; bottom: 12px; right: 22px; font-size: 0.65rem; font-weight: 600; opacity: 0.4; z-index: 10; }
+        .watermark { position: absolute; bottom: 10px; right: 18px; font-size: 0.6rem; font-weight: 600; opacity: 0.4; z-index: 10; }
     </style>
 </head>
 <body>
@@ -75,7 +75,7 @@
                         <path fill="rgba(255,255,255,0.4)" d="M0,0 L330,0 L330,12 C 275,35 220,0 165,18 C 110,35 55,0 0,12 Z"/>
                     </svg>
         <div class="decor-layer">
-                    <svg width="35" height="35" viewBox="0 0 100 100" style="position: absolute; top: 15px; left: 15px;">
+                    <svg width="28" height="28" viewBox="0 0 100 100" style="position: absolute; top: 12px; left: 12px;">
                         <path fill="#BE185D" d="M50,40 C40,10 20,30 45,50 C20,70 40,90 50,60 C60,90 80,70 55,50 C80,30 60,10 50,40 Z"/>
                         <circle cx="50" cy="50" r="5" fill="#FFF"/>
                     </svg>
