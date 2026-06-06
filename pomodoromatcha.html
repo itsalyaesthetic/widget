@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro - matcha</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Fredoka', sans-serif; }
+        body { background: transparent; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+        
+        .pomodoro-widget {
+            width: 320px; padding: 70px 20px 30px 20px; border-radius: 36px;
+            position: relative; user-select: none; box-shadow: 0 15px 35px rgba(0,0,0,0.06);
+            display: flex; flex-direction: column; align-items: center; overflow: hidden;
+            
+            border: 4px solid #A3E635; color: #166534;
+            background-color: rgba(247, 254, 231, 0.5); background-image: repeating-linear-gradient(45deg, rgba(163, 230, 53, 0.1) 0, rgba(163, 230, 53, 0.1) 2px, transparent 2px, transparent 8px);
+            background-size: auto; background-position: 0 0;
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+        }
+
+        .top-accent-svg { position: absolute; top: -1px; left: -1px; width: calc(100% + 2px); height: auto; z-index: 5; pointer-events: none; border-radius: 36px 36px 0 0; }
+        .decor-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 6; }
+        
+        .btn-settings {
+            position: absolute; top: 12px; right: 16px; z-index: 20; 
+            background: rgba(255, 255, 255, 0.75); border: none;
+            width: 36px; height: 36px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            cursor: pointer; opacity: 0.9; transition: all 0.3s ease; 
+            color: inherit; box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .btn-settings .material-icons-round { font-size: 1.3rem; }
+        .btn-settings:hover { 
+            opacity: 1; transform: rotate(90deg) scale(1.1); 
+            background: rgba(255, 255, 255, 0.95); box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+        }
+
+        .mode-selectors {
+            display: flex; gap: 6px; background: rgba(255,255,255,0.4);
+            padding: 6px; border-radius: 20px; position: relative; z-index: 10; margin-bottom: 20px;
+        }
+        .mode-btn {
+            background: transparent; border: none; font-size: 0.8rem; font-weight: 600;
+            color: inherit; padding: 8px 12px; border-radius: 14px; cursor: pointer;
+            transition: all 0.2s ease; opacity: 0.7;
+        }
+        .mode-btn.active { opacity: 1; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transform: scale(1.05); background-color: #84CC16; color: white; }
+        
+        .timer-display { font-size: 4.5rem; font-weight: 700; letter-spacing: 2px; margin-bottom: 25px; position: relative; z-index: 10; text-shadow: 2px 2px 0px rgba(255,255,255,0.5); }
+        
+        .action-buttons { display: flex; gap: 15px; position: relative; z-index: 10; width: 100%; justify-content: center; }
+        .btn-main, .btn-reset { border: none; border-radius: 18px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
+        .btn-main { padding: 12px 35px; font-size: 1.1rem; color: white; box-shadow: 0 6px 15px rgba(0,0,0,0.1); background-color: #84CC16; }
+        .btn-main:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+        .btn-main:active { transform: scale(0.95); }
+        
+        .btn-reset { padding: 12px 18px; font-size: 1rem; background: rgba(255,255,255,0.6); color: inherit; opacity: 0.8; }
+        .btn-reset:hover { opacity: 1; background: rgba(255,255,255,0.9); transform: rotate(-30deg); }
+        
+        .watermark { position: absolute; bottom: 12px; right: 20px; font-size: 0.65rem; font-weight: 600; opacity: 0.5; z-index: 10; }
+
+        /* Settings Overlay */
+        .settings-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.6); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            z-index: 30; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 20px; opacity: 0; pointer-events: none; transition: 0.3s ease; border-radius: 30px;
+        }
+        .settings-overlay.show { opacity: 1; pointer-events: auto; }
+        .settings-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 20px; }
+        .setting-row { display: flex; justify-content: space-between; align-items: center; width: 90%; margin-bottom: 12px; font-weight: 600; font-size: 0.95rem; }
+        .setting-input {
+            width: 65px; padding: 6px 10px; border-radius: 12px; border: 2px solid rgba(0,0,0,0.1);
+            font-family: 'Fredoka'; font-weight: 600; text-align: center; outline: none; background: rgba(255,255,255,0.8);
+            transition: 0.2s; color: inherit;
+        }
+        .setting-input:focus { border-color: #84CC16; }
+        .btn-save {
+            margin-top: 15px; padding: 10px 30px; border: none; border-radius: 16px; font-weight: 600; font-size: 1rem;
+            cursor: pointer; color: white; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.1); background-color: #84CC16;
+        }
+        .btn-save:hover { transform: translateY(-2px); }
+    </style>
+</head>
+<body>
+    <div class="pomodoro-widget">
+        <svg class="top-accent-svg" viewBox="0 0 330 48" xmlns="http://www.w3.org/2000/svg"><path fill="#A3E635" d="M0,0 L330,0 L330,15 C 315,15 315,35 290,35 C 265,35 265,15 240,15 C 215,15 215,45 180,45 C 145,45 145,20 120,20 C 95,20 95,40 70,40 C 45,40 45,20 0,20 Z"/></svg>
+        <div class="decor-layer"><svg width="40" height="40" viewBox="0 0 100 100" style="position: absolute; top: 10px; left: 15px;"><path d="M10,90 C10,90 10,20 50,10 C90,10 90,50 90,50 C90,90 10,90 10,90 Z" fill="#4D7C0F" opacity="0.6"/><path d="M15,85 C15,85 15,30 50,20 C80,20 80,50 80,50 C80,85 15,85 15,85 Z" fill="#A3E635"/></svg></div>
+
+        <button class="btn-settings" onclick="toggleSettings()" title="Pengaturan">
+            <span class="material-icons-round">settings</span>
+        </button>
+
+        <div class="mode-selectors">
+            <button class="mode-btn active" id="btn-pomo" onclick="setMode('pomodoro')">Pomodoro</button>
+            <button class="mode-btn" id="btn-short" onclick="setMode('short')">Short Break</button>
+            <button class="mode-btn" id="btn-long" onclick="setMode('long')">Long Break</button>
+        </div>
+
+        <div class="timer-display" id="time-display">25:00</div>
+
+        <div class="action-buttons">
+            <button class="btn-main" id="start-btn" onclick="toggleTimer()">Start</button>
+            <button class="btn-reset" onclick="resetTimer()">↻</button>
+        </div>
+
+        <div class="watermark">Itsalyaesthetic</div>
+
+        <div class="settings-overlay" id="settings-menu">
+            <div class="settings-title">Custom Timer (Menit)</div>
+            <div class="setting-row">
+                <span>🍅 Pomodoro</span>
+                <input type="number" id="input-pomo" class="setting-input" value="25" min="1" max="90">
+            </div>
+            <div class="setting-row">
+                <span>☕ Short Break</span>
+                <input type="number" id="input-short" class="setting-input" value="5" min="1" max="30">
+            </div>
+            <div class="setting-row">
+                <span>🛋️ Long Break</span>
+                <input type="number" id="input-long" class="setting-input" value="15" min="1" max="60">
+            </div>
+            <button class="btn-save" onclick="saveSettings()">Simpan & Terapkan</button>
+        </div>
+    </div>
+    
+    <script>
+        let customTimes = { pomodoro: 25, short: 5, long: 15 };
+        let timeLeft = customTimes.pomodoro * 60;
+        let timerId = null;
+        let isRunning = false;
+        let currentMode = 'pomodoro';
+
+        function toggleSettings() {
+            document.getElementById('settings-menu').classList.toggle('show');
+        }
+
+        function saveSettings() {
+            const p = parseInt(document.getElementById('input-pomo').value);
+            const s = parseInt(document.getElementById('input-short').value);
+            const l = parseInt(document.getElementById('input-long').value);
+            
+            if(p > 0 && s > 0 && l > 0) {
+                customTimes.pomodoro = p;
+                customTimes.short = s;
+                customTimes.long = l;
+            }
+            toggleSettings();
+            setMode(currentMode);
+        }
+
+        function setMode(mode) {
+            clearInterval(timerId);
+            isRunning = false;
+            currentMode = mode;
+            
+            document.getElementById('btn-pomo').classList.remove('active');
+            document.getElementById('btn-short').classList.remove('active');
+            document.getElementById('btn-long').classList.remove('active');
+            
+            timeLeft = customTimes[mode] * 60;
+            document.getElementById('btn-' + (mode === 'pomodoro' ? 'pomo' : mode)).classList.add('active');
+            
+            updateDisplay();
+            document.getElementById('start-btn').innerText = 'Start';
+        }
+
+        function toggleTimer() {
+            if (isRunning) {
+                clearInterval(timerId);
+                document.getElementById('start-btn').innerText = 'Start';
+            } else {
+                timerId = setInterval(() => {
+                    timeLeft--;
+                    updateDisplay();
+                    if (timeLeft <= 0) {
+                        clearInterval(timerId);
+                        isRunning = false;
+                        document.getElementById('start-btn').innerText = 'Start';
+                        alert('Waktu ' + currentMode + ' habis! 🎉');
+                        setMode(currentMode);
+                    }
+                }, 1000);
+                document.getElementById('start-btn').innerText = 'Pause';
+            }
+            isRunning = !isRunning;
+        }
+
+        function resetTimer() {
+            setMode(currentMode);
+        }
+
+        function updateDisplay() {
+            const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            const s = (timeLeft % 60).toString().padStart(2, '0');
+            document.getElementById('time-display').innerText = m + ':' + s;
+        }
+
+        updateDisplay();
+    </script>
+</body>
+</html>
