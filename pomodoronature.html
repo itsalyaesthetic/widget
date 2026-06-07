@@ -51,7 +51,7 @@
         }
         .mode-btn.active { opacity: 1; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transform: scale(1.05); background-color: #60A5FA; color: white; }
         
-        .timer-display { font-size: 4.5rem; font-weight: 700; letter-spacing: 2px; margin-bottom: 25px; position: relative; z-index: 10; text-shadow: 2px 2px 0px rgba(255,255,255,0.5); }
+        .timer-display { font-size: 4.5rem; font-weight: 700; letter-spacing: 2px; margin-bottom: 25px; position: relative; z-index: 10; text-shadow: 2px 2px 0px rgba(255,255,255,0.5); transition: font-size 0.3s ease; }
         
         .action-buttons { display: flex; gap: 15px; position: relative; z-index: 10; width: 100%; justify-content: center; }
         .btn-main, .btn-reset { border: none; border-radius: 18px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; }
@@ -111,6 +111,7 @@
 
         <div class="watermark">Itsalyaesthetic</div>
 
+        <!-- Menu Settings -->
         <div class="settings-overlay" id="settings-menu">
             <div class="settings-title">Custom Timer (Menit)</div>
             <div class="setting-row">
@@ -127,6 +128,8 @@
             </div>
             <button class="btn-save" onclick="saveSettings()">Simpan & Terapkan</button>
         </div>
+        
+        <audio id="bell-sound" src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" preload="auto"></audio>
     </div>
     
     <script>
@@ -175,15 +178,19 @@
                 clearInterval(timerId);
                 document.getElementById('start-btn').innerText = 'Start';
             } else {
+                if(timeLeft <= 0) resetTimer();
+                
                 timerId = setInterval(() => {
                     timeLeft--;
                     updateDisplay();
+                    
                     if (timeLeft <= 0) {
                         clearInterval(timerId);
                         isRunning = false;
                         document.getElementById('start-btn').innerText = 'Start';
-                        alert('Waktu ' + currentMode + ' habis! 🎉');
-                        setMode(currentMode);
+                        
+                        const bell = document.getElementById('bell-sound');
+                        if (bell) bell.play().catch(e => console.log("Gagal memutar suara:", e));
                     }
                 }, 1000);
                 document.getElementById('start-btn').innerText = 'Pause';
@@ -196,9 +203,16 @@
         }
 
         function updateDisplay() {
-            const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
-            const s = (timeLeft % 60).toString().padStart(2, '0');
-            document.getElementById('time-display').innerText = m + ':' + s;
+            const displayEl = document.getElementById('time-display');
+            if (timeLeft <= 0) {
+                displayEl.innerText = "Selesai";
+                displayEl.style.fontSize = "3.2rem";
+            } else {
+                const m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+                const s = (timeLeft % 60).toString().padStart(2, '0');
+                displayEl.innerText = m + ':' + s;
+                displayEl.style.fontSize = "4.5rem";
+            }
         }
 
         updateDisplay();
